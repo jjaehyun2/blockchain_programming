@@ -1,22 +1,4 @@
-//staking
-//deposit(MyToken) // withdraw(MyToken)
 
-//MyToken : token balancd management
-// - the balance of TinyBank address
-// TinyBank : deposit / withdraw vault
-// - users token management
-// - user -> deposit -> TinyBank -> transfer(user -> TinyBank)
-
-//Reward
-// -reward token : MyToken
-// -reward resource :  1MT/block minting
-// -reward strategy : staked[user] / totalStaked distrubution
-
-// -singer0 block 0 staking
-// -singer0 block 5 staking
-// - 0 -- 1 -- 2 -- 3 -- 4 -- 5
-//   |                        |
-//   singer0 10MT             singer1 10MT
 
 
 // SPDX-License-Identifier: MIT
@@ -35,15 +17,15 @@ contract TinyBank is MultiManagedAccess {
     event Staked(address from, uint256 amount);
     event Withdrawn(uint256 amount, address to);
 
-    IMyToken public stakingtoken; //MyToken contract type
+    IMyToken public stakingtoken; 
 
-    mapping(address => uint256) public lastClaimedBlock; //유저가 지금까지 받은 보상
+    mapping(address => uint256) public lastClaimedBlock; 
 
     uint256 public defaultRewardPerBlock = 1 * 10 ** 18;
     uint256 public rewardPerBlock;
 
-    mapping(address => uint256) public staked; //누가 얼마 예치했는지
-    uint256 public totalStaked; //전체 예치된 양
+    mapping(address => uint256) public staked; 
+    uint256 public totalStaked; 
 
     constructor(IMyToken _stakingToken, address[MANAGER_NUMBERS] memory _managers) MultiManagedAccess(msg.sender, _managers) {
         stakingtoken = _stakingToken;
@@ -54,25 +36,23 @@ contract TinyBank is MultiManagedAccess {
         rewardPerBlock = _amount;
     }   
 
-    //who, when?
-    // genesis staking
-    modifier updateReward(address to) { //internel
+
+    modifier updateReward(address to) { 
         if (staked[to] > 0) {
             uint256 blocks = block.number - lastClaimedBlock[to];   
-            uint256 reward = (blocks * rewardPerBlock * staked[to]) / totalStaked; //1MT/block
-            stakingtoken.mint(reward, to); //MyToken contract의 mint 호출
+            uint256 reward = (blocks * rewardPerBlock * staked[to]) / totalStaked; 
+            stakingtoken.mint(reward, to); 
         }
         
         lastClaimedBlock[to] = block.number;
-        _; //어떤 함수 앞에 insert 효과 //caller's code
+        _; /
     }
 
 
     //approve -> transferFrom
     function stake(uint256 _amount) external updateReward(msg.sender) {
         require(_amount >= 0, "cannot stake 0 amount");
-        //MyToken contract의 approve가 먼저 호출되어야함
-        stakingtoken.transferFrom(msg.sender, address(this), _amount); //TinyBank contract로 토큰 전송
+        stakingtoken.transferFrom(msg.sender, address(this), _amount); 
         staked[msg.sender] += _amount;
         totalStaked += _amount;
         emit Staked(msg.sender, _amount);
@@ -80,7 +60,7 @@ contract TinyBank is MultiManagedAccess {
 
     function withdraw(uint256 _amount) external updateReward(msg.sender) {
         require(staked[msg.sender] >= _amount, "insufficient staked token");
-        stakingtoken.transfer(_amount, msg.sender); //TinyBank contract에서 토큰 전송
+        stakingtoken.transfer(_amount, msg.sender); 
         staked[msg.sender] -= _amount;
         totalStaked -= _amount;
       
