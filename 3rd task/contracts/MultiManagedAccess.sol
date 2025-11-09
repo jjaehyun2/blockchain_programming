@@ -30,7 +30,7 @@ abstract contract MultiManagedAccess {
     }
 
     modifier onlyAllConfirmed() {
-        require(allConfirmed(), "Not all managers are confirmed yet");
+        require(allConfirmed(), "Not all confirmed yet");
         _;
     }
 
@@ -52,7 +52,7 @@ abstract contract MultiManagedAccess {
                 break;
             }
         }
-        require(found, "You are not one of managers");
+        require(found, "You are not a managers");
     }
 
 }
