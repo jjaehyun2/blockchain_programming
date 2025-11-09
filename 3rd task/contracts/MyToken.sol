@@ -9,7 +9,7 @@ contract MyToken is ManagedAccess {
 
     string public name; 
     string public symbol; 
-    uint8 public decimals; //uint8 --> 8 bit unsigned int ,...., uint256
+    uint8 public decimals; 
     
     uint256 public totalSupply; 
     mapping(address => uint256) public balanceOf;
