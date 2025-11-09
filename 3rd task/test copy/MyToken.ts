@@ -45,7 +45,7 @@ describe("My Token", () => {
         it("should have 0.5MTK", async () => {
             const signer0 = signers[0];
             const signer1 = signers[1];
-            await expect(myTokenC.transfer(hre.ethers.parseUnits("0.5", DECIMALS), signer1.address)) //event check 앞에는 await
+            await expect(myTokenC.transfer(hre.ethers.parseUnits("0.5", DECIMALS), signer1.address))
                     .to.emit(myTokenC, "Transfer").withArgs(signer0.address, signer1.address, hre.ethers.parseUnits("0.5", DECIMALS));
             expect(await myTokenC.balanceOf(signer1.address)).to.equal(hre.ethers.parseUnits("0.5", DECIMALS));
 
@@ -73,12 +73,12 @@ describe("My Token", () => {
     });
     describe("Approve & TransferFrom homework", () => {
         it("should transfer 7.77MTK from signer0 to signer1", async () => {
-            const signer0 = signers[0]; //0번째의 주소얻기
-            const signer1 = signers[1]; //1번째의 얻기
-            await expect(myTokenC.approve(signer1.address, hre.ethers.parseUnits("10", DECIMALS))) //10의 권한을 부여
+            const signer0 = signers[0]; 
+            const signer1 = signers[1]; 
+            await expect(myTokenC.approve(signer1.address, hre.ethers.parseUnits("10", DECIMALS)))
                         .to.emit(myTokenC, "Approval")
-                        .withArgs(signer1.address, hre.ethers.parseUnits("10", DECIMALS)); //1에게 부여한 approval이벤트가 확인
-            await expect(myTokenC.connect(signer1).transferFrom(signer0.address, signer1.address, hre.ethers.parseUnits("7.77", DECIMALS)))//1이 자신으로 7.77전송
+                        .withArgs(signer1.address, hre.ethers.parseUnits("10", DECIMALS)); 
+            await expect(myTokenC.connect(signer1).transferFrom(signer0.address, signer1.address, hre.ethers.parseUnits("7.77", DECIMALS)))
                 .to.emit(myTokenC, "Transfer")
                 .withArgs(signer0.address, signer1.address, hre.ethers.parseUnits("7.77", DECIMALS));
             expect(await myTokenC.balanceOf(signer1.address)).to.equal(hre.ethers.parseUnits("7.77", DECIMALS));
