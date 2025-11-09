@@ -9,9 +9,6 @@ abstract contract MultiManagedAccess {
     address public owner;
     address[MANAGER_NUMBERS] public managers;
     bool[MANAGER_NUMBERS] public confirmed;
-    //manager0 --> confirmed0
-    //manager1 --> confirmed1
-    // ...
 
 
     constructor(address _owner, address[MANAGER_NUMBERS] memory _managers) {
