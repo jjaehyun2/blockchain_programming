@@ -88,7 +88,7 @@ describe("TinyBank", () => {
 
         });
     });
-//--------------------------------------------------------------------------------------------------------
+
     describe("Multi-Manager Access Control", async () => {
         const newReward = hre.ethers.parseUnits("10", DECIMALS);
         it("should revert when a non-manager tries to confirm", async () => {
@@ -122,5 +122,5 @@ describe("TinyBank", () => {
             expect(await TinyBankC.rewardPerBlock()).to.equal(newReward);
         });
     });
-    //--------------------------------------------------------------------------------------------------------
+
 });
