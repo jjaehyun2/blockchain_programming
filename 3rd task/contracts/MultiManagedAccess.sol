@@ -49,7 +49,7 @@ abstract contract MultiManagedAccess {
     function confirm() external {
         bool found = false;
         for (uint i = 0; i < MANAGER_NUMBERS; i++) {
-            if (msg.sender == managers[i]) { //tx발생시킨 사람이 매니저인지 확인
+            if (msg.sender == managers[i]) { 
                 confirmed[i] = true;
                 found = true;
                 break;
